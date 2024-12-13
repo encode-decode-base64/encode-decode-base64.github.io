@@ -80,6 +80,13 @@
                 width: 100%;
             }
         }
+
+        #disclaimer {
+            margin-top: 15px;
+            font-size: 12px;
+            color: red;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -93,11 +100,21 @@
         <button onclick="decodeText()">Decode</button>
 
         <textarea id="result" readonly></textarea>
+
+        <div id="disclaimer">
+            <p>⚠️ This tool is for non-sensitive data only. Do not use it for secure or confidential information.</p>
+        </div>
     </div>
 
     <script>
+        // Helper function to validate Base64 strings
+        function isValidBase64(str) {
+            const base64Regex = /^[A-Za-z0-9+/=]*$/;
+            return base64Regex.test(str) && str.length % 4 === 0;
+        }
+
         function encodeText() {
-            const inputText = document.getElementById("inputText").value;
+            const inputText = document.getElementById("inputText").value.trim();
 
             if (!inputText) {
                 alert("Please enter text to encode.");
@@ -105,23 +122,28 @@
             }
 
             try {
-                const encodedText = btoa(inputText);
+                const encodedText = btoa(unescape(encodeURIComponent(inputText)));
                 document.getElementById("result").value = encodedText;
             } catch (error) {
-                alert("Error encoding text. Please ensure the text is valid.");
+                alert("Error encoding text. Please ensure the text is valid UTF-8.");
             }
         }
 
         function decodeText() {
-            const inputText = document.getElementById("inputText").value;
+            const inputText = document.getElementById("inputText").value.trim();
 
             if (!inputText) {
                 alert("Please enter text to decode.");
                 return;
             }
 
+            if (!isValidBase64(inputText)) {
+                alert("Invalid Base64 string. Please check your input.");
+                return;
+            }
+
             try {
-                const decodedText = atob(inputText);
+                const decodedText = decodeURIComponent(escape(atob(inputText)));
                 document.getElementById("result").value = decodedText;
             } catch (error) {
                 alert("Error decoding text. Please ensure the Base64 string is valid.");
