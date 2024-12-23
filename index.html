@@ -18,11 +18,11 @@
 
         #main {
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: flex-start;
             gap: 20px;
             width: 90%;
-            max-width: 1200px;
+            max-width: 100%;
         }
 
         #container {
@@ -53,7 +53,7 @@
             border: 1px solid #ddd;
             border-radius: 4px;
             box-sizing: border-box;
-            resize: none; /* Disable textarea resizing */
+            resize: none;
         }
 
         button {
@@ -80,33 +80,27 @@
             border: 1px solid #ddd;
             border-radius: 4px;
             box-sizing: border-box;
-            overflow-y: scroll; /* Enable vertical scrollbar */
-        }
-
-        @media screen and (max-width: 900px) {
-            #main {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            #container {
-                width: 100%;
-            }
+            overflow-y: scroll;
         }
 
         #profile {
-            flex: 1;
             text-align: center;
+            flex: 1;
+            position: sticky;
+            top: 20px;
+            align-self: flex-start;
         }
 
         #profile img {
-            max-width: 150px;
-            border-radius: 50%;
+            max-width: 290px;
+            margin-top: 346px;
             margin-bottom: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
         #profile a {
+            display: inline-block;
+            margin-top: 10px;
             text-decoration: none;
             font-size: 16px;
             color: #fff;
@@ -118,6 +112,18 @@
 
         #profile a:hover {
             background-color: #005582;
+        }
+
+        @media screen and (max-width: 900px) {
+            #main {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            #profile {
+                position: static;
+                margin-bottom: 20px;
+            }
         }
     </style>
 </head>
@@ -135,7 +141,7 @@
             <textarea id="result" readonly></textarea>
 
             <div id="disclaimer">
-                <p>⚠️ This tool is for non-sensitive data only. Do not use it for secure or confidential information.!</p>
+                <p>⚠️ This tool is for non-sensitive data only. Do not use it for secure or confidential information.</p>
             </div>
         </div>
 
