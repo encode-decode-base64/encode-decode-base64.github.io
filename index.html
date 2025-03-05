@@ -12,6 +12,7 @@
             --border-color: #404040;
             --gradient-encode: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             --gradient-decode: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            --success-color: #ffcc00; /* Happy, energetic color for success */
         }
 
         body {
@@ -109,6 +110,12 @@
             background: var(--gradient-decode);
         }
 
+        .copy-btn {
+            background: var(--success-color);
+            color: black;
+            font-weight: bold;
+        }
+
         button:hover {
             transform: translateY(-2px);
             opacity: 0.9;
@@ -132,8 +139,8 @@
         .copy-feedback {
             position: absolute;
             right: calc(100% + 10px);
-            background: #38a169;
-            color: white;
+            background: var(--success-color);
+            color: black;
             padding: 6px 12px;
             border-radius: 20px;
             font-size: 0.85rem;
@@ -150,11 +157,6 @@
         .copy-feedback.active {
             opacity: 1;
             visibility: visible;
-        }
-        
-        .copy-btn {
-          background: #1ab2ff;
-          color: white;
         }
 
         @media (max-width: 768px) {
