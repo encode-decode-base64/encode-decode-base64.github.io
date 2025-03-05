@@ -10,207 +10,160 @@
             --container-bg: #2d2d2d;
             --text-primary: #e0e0e0;
             --border-color: #404040;
-            --gradient-encode: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --gradient-decode: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
-            --success-color: #ffcc00; /* Happy, energetic color for success */
+            --button-bg: #ffcc00;
         }
 
         body {
-            font-family: 'Fira Code', 'Segoe UI', system-ui, sans-serif;
+            font-family: 'Fira Code', monospace;
             background-color: var(--bg-color);
+            color: var(--text-primary);
             margin: 0;
             padding: 20px;
             height: 100vh;
-            color: var(--text-primary);
             display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .container {
-            flex: 1;
+            display: flex;
+            flex-direction: column;
+            width: 95%;
+            max-width: 1200px;
+            height: 85vh;
             background: var(--container-bg);
-            padding: 2rem;
             border-radius: 12px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
             border: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-            max-height: 95vh;
-        }
-
-        h1 {
-            color: #667eea;
-            margin-bottom: 1.5rem;
-            text-align: center;
-            font-weight: 600;
-            font-size: 2rem;
-        }
-
-        .converter-section {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
             overflow: hidden;
+            padding: 1rem;
         }
 
-        .input-group {
+        .top-buttons {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 10px;
+        }
+
+        .boxes {
+            display: flex;
+            flex: 1;
+        }
+
+        .box {
             flex: 1;
             display: flex;
             flex-direction: column;
+            padding: 1.5rem;
+            position: relative;
         }
 
-        label {
-            color: #888;
-            font-weight: 500;
-            margin-bottom: 0.5rem;
+        h2 {
+            margin: 0 0 1rem;
+            text-align: center;
+            font-size: 1.5rem;
         }
 
         textarea {
             flex: 1;
             width: 100%;
-            padding: 1.2rem;
+            padding: 1rem;
             background: #1e1e1e;
             border: 2px solid var(--border-color);
             border-radius: 8px;
             resize: none;
-            font-family: 'Fira Code', monospace;
-            font-size: 0.95rem;
+            font-size: 1rem;
             color: var(--text-primary);
-            transition: all 0.25s ease;
         }
 
-        textarea:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
-        }
-
-        .button-group {
+        .buttons {
             display: flex;
-            gap: 1rem;
-            margin: 1rem 0;
+            justify-content: space-between;
+            margin-top: 10px;
         }
 
         button {
-            padding: 0.8rem 1.5rem;
-            border: none;
-            border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            flex: 1;
-            color: white;
-        }
-
-        .encode-btn {
-            background: var(--gradient-encode);
-        }
-
-        .decode-btn {
-            background: var(--gradient-decode);
-        }
-
-        .copy-btn {
-            background: var(--success-color);
+            background: var(--button-bg);
             color: black;
             font-weight: bold;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
         }
 
         button:hover {
             transform: translateY(-2px);
-            opacity: 0.9;
         }
 
-        .result-group {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-        }
-
-        .copy-container {
-            position: absolute;
-            right: 10px;
-            top: 10px;
-            display: flex;
-            align-items: center;
-        }
-
-      .copy-feedback {
-            position: absolute;
-            right: calc(100% + 10px);
-            background: #38a169;
-            color: white;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-            z-index: 10;
-        }
-
-        .copy-feedback.active {
-            opacity: 1;
-            visibility: visible;
+        .char-count {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #ffcc00;
         }
 
         @media (max-width: 768px) {
-            .button-group {
+            .boxes {
                 flex-direction: column;
+                height: auto;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Base64 Converter</h1>
-        <div class="converter-section">
-            <div class="input-group">
-                <label>Input</label>
-                <textarea id="inputText" placeholder="Paste your content here..." autofocus spellcheck="false"></textarea>
-            </div>
-
-            <div class="button-group">
-                <button class="encode-btn" onclick="encodeText()">Encode</button>
-                <button class="decode-btn" onclick="decodeText()">Decode</button>
-            </div>
-
-            <div class="input-group">
-                <label>Result</label>
-                <div class="result-group">
-                    <textarea id="result" readonly placeholder="Your converted content will appear here..." spellcheck="false"></textarea>
-                    <div class="copy-container">
-                        <div class="copy-feedback" id="copyFeedback">✔ Copied!</div>
-                        <button class="copy-btn" onclick="copyResult()">📋 Copy</button>
-                    </div>
+        <div class="top-buttons">
+            <button onclick="clearText()">Clear All</button>
+        </div>
+        <div class="boxes">
+            <div class="box">
+                <h2>Text</h2>
+                <textarea id="inputText" placeholder="Type or paste text here..."></textarea>
+                <div class="buttons">
+                    <button onclick="copyText('inputText')">Copy</button>
                 </div>
+            </div>
+            <div class="box">
+                <h2>Base64</h2>
+                <textarea id="outputText" placeholder="Base64 output..." readonly></textarea>
+                <div class="buttons">
+                    <button onclick="copyText('outputText')">Copy</button>
+                </div>
+                <div class="char-count" id="charCount">Characters: 0</div>
             </div>
         </div>
     </div>
 
     <script>
-        function encodeText() {
-            const input = document.getElementById('inputText').value;
-            document.getElementById('result').value = btoa(unescape(encodeURIComponent(input)));
+        const inputText = document.getElementById('inputText');
+        const outputText = document.getElementById('outputText');
+        const charCount = document.getElementById('charCount');
+
+        function updateBase64() {
+            try {
+                outputText.value = inputText.value ? btoa(unescape(encodeURIComponent(inputText.value))) : "";
+                charCount.textContent = `Characters: ${outputText.value.length}`;
+            } catch {
+                outputText.value = "Invalid input!";
+                charCount.textContent = `Characters: 0`;
+            }
         }
 
-        function decodeText() {
-            const input = document.getElementById('inputText').value;
-            document.getElementById('result').value = decodeURIComponent(escape(atob(input)));
+        inputText.addEventListener("input", updateBase64);
+
+        function copyText(elementId) {
+            const textarea = document.getElementById(elementId);
+            textarea.select();
+            document.execCommand("copy");
+            alert("Copied!");
         }
 
-        function copyResult() {
-            const result = document.getElementById('result');
-            result.select();
-            document.execCommand('copy');
-            const feedback = document.getElementById('copyFeedback');
-            feedback.classList.add('active');
-            setTimeout(() => feedback.classList.remove('active'), 2000);
+        function clearText() {
+            inputText.value = "";
+            outputText.value = "";
+            charCount.textContent = `Characters: 0`;
         }
     </script>
 </body>
