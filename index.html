@@ -125,44 +125,39 @@
             position: absolute;
             right: 10px;
             top: 10px;
+            display: flex;
+            align-items: center;
         }
 
-        .copy-btn {
-            background: #3d3d3d;
+        .copy-feedback {
+            position: absolute;
+            right: calc(100% + 10px);
+            background: #38a169;
             color: white;
-            padding: 0.4rem 0.8rem;
-            border-radius: 4px;
-            border: 1px solid #505050;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .copy-btn:hover {
-            background: #4d4d4d;
-            transform: scale(1.05);
-        }
-
-        .disclaimer {
-            margin-top: 1.5rem;
-            padding: 1rem;
-            background: #2b1d1d;
-            border-radius: 8px;
-            color: #ff6b6b;
+            padding: 6px 12px;
+            border-radius: 20px;
             font-size: 0.85rem;
-            border: 1px solid #5c2a2a;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+
+        .copy-feedback.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .copy-btn {
+          background: #1ab2ff;
+          color: white;
         }
 
         @media (max-width: 768px) {
-            body {
-                padding: 10px;
-                height: auto;
-            }
-            
-            .container {
-                padding: 1.5rem;
-            }
-            
             .button-group {
                 flex-direction: column;
             }
@@ -172,16 +167,10 @@
 <body>
     <div class="container">
         <h1>Base64 Converter</h1>
-        
         <div class="converter-section">
             <div class="input-group">
                 <label>Input</label>
-                <textarea 
-                    id="inputText" 
-                    placeholder="Paste your content here..."
-                    autofocus
-                    spellcheck="false"
-                ></textarea>
+                <textarea id="inputText" placeholder="Paste your content here..." autofocus spellcheck="false"></textarea>
             </div>
 
             <div class="button-group">
@@ -192,62 +181,34 @@
             <div class="input-group">
                 <label>Result</label>
                 <div class="result-group">
-                    <textarea 
-                        id="result" 
-                        readonly
-                        placeholder="Your converted content will appear here..."
-                        spellcheck="false"
-                    ></textarea>
+                    <textarea id="result" readonly placeholder="Your converted content will appear here..." spellcheck="false"></textarea>
                     <div class="copy-container">
+                        <div class="copy-feedback" id="copyFeedback">✔ Copied!</div>
                         <button class="copy-btn" onclick="copyResult()">📋 Copy</button>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div class="disclaimer">
-            ⚠️ Security Notice: Not for sensitive data
         </div>
     </div>
 
     <script>
         function encodeText() {
             const input = document.getElementById('inputText').value;
-            try {
-                const encoded = btoa(unescape(encodeURIComponent(input)));
-                document.getElementById('result').value = encoded;
-            } catch (error) {
-                showError('Encoding error - check input format');
-            }
+            document.getElementById('result').value = btoa(unescape(encodeURIComponent(input)));
         }
 
         function decodeText() {
             const input = document.getElementById('inputText').value;
-            if (!/^[A-Za-z0-9+/=]*$/.test(input)) {
-                showError('Invalid Base64 characters');
-                return;
-            }
-            try {
-                const decoded = decodeURIComponent(escape(atob(input)));
-                document.getElementById('result').value = decoded;
-            } catch (error) {
-                showError('Decoding error - check format');
-            }
+            document.getElementById('result').value = decodeURIComponent(escape(atob(input)));
         }
 
         function copyResult() {
             const result = document.getElementById('result');
             result.select();
             document.execCommand('copy');
-            alert('Copied to clipboard!');
-        }
-
-        function showError(message) {
-            const disclaimer = document.querySelector('.disclaimer');
-            disclaimer.textContent = `⚠️ Error: ${message}`;
-            setTimeout(() => {
-                disclaimer.textContent = '⚠️ Security Notice: Not for sensitive data';
-            }, 3000);
+            const feedback = document.getElementById('copyFeedback');
+            feedback.classList.add('active');
+            setTimeout(() => feedback.classList.remove('active'), 2000);
         }
     </script>
 </body>
